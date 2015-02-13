@@ -22,3 +22,4 @@ Description: @WEBOS_PROJECT_SUMMARY@
 Version: @WEBOS_COMPONENT_VERSION@
 Libs: -L${libdir} -lluna-prefs -l@CMAKE_PROJECT_NAME@
 Cflags: -I${includedir}
+Requires: json-c

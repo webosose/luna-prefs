@@ -26,7 +26,7 @@
 #include <unistd.h>
 #include <sys/vfs.h>
 
-#include <cjson/json.h>
+#include <json.h>
 #include <nyx/nyx_client.h>
 /* todo:
  *
@@ -628,7 +628,7 @@ LPAppSetValueCJ( LPAppHandle handle, const char* key, struct json_object* json )
         if ( !!jstr ) {
             err = setValueString( handle, key, jstr );
         } else {
-            g_critical( "json supplied to %s not acceptable to mjson", __func__ );
+            g_critical( "json supplied to %s not acceptable to json", __func__ );
             err = LP_ERR_VALUENOTJSON;
         }
     }

@@ -22,7 +22,7 @@
 #include <glib.h>
 #include <unistd.h>
 #include <stdarg.h>
-#include <cjson/json.h>
+#include <json.h>
 #include <getopt.h>
 
 #include "lunaprefs.h"

@@ -24,10 +24,10 @@ pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 include_directories(${GLIB2_CFLAGS})
 webos_add_compiler_flags(ALL ${GLIB2_CFLAGS})
 
-# -- check for cjson
-pkg_check_modules(CJSON REQUIRED cjson)
-include_directories(${CJSON_CFLAGS})
-webos_add_compiler_flags(ALL ${CJSON_CFLAGS})
+# -- check for json-c
+pkg_check_modules(JSON REQUIRED json-c)
+include_directories(${JSON_CFLAGS})
+webos_add_compiler_flags(ALL ${JSON_CFLAGS})
 
 # -- check for LS2 (internally depends on pmloglib)
 pkg_check_modules(LS2 REQUIRED luna-service2)
@@ -41,7 +41,7 @@ webos_add_linker_options(ALL --no-undefined)
 add_executable(luna-prefs-service main.c database.c accesschecker.c)
 target_link_libraries(luna-prefs-service
                       ${GLIB2_LDFLAGS}
-                      ${CJSON_LDFLAGS}
+                      ${JSON_LDFLAGS}
                       ${LS2_LDFLAGS}
                       luna-prefs
                       )

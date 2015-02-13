@@ -23,9 +23,9 @@ include_directories(../include/)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 webos_add_compiler_flags(ALL ${GLIB2_CFLAGS})
 
-# -- check for cjson
-pkg_check_modules(CJSON REQUIRED cjson)
-webos_add_compiler_flags(ALL ${CJSON_CFLAGS})
+# -- check for json-c
+pkg_check_modules(JSON REQUIRED json-c)
+webos_add_compiler_flags(ALL ${JSON_CFLAGS})
 
 # -- no way to disable warn_unused_result right now.
 webos_add_compiler_flags(ALL -g -O3 -Wall -Wno-unused-but-set-variable -Wno-unused-variable -fno-exceptions)
@@ -34,7 +34,7 @@ webos_add_linker_options(ALL --no-undefined)
 add_executable(lunaprop main.c)
 target_link_libraries(lunaprop
                       ${GLIB2_LDFLAGS}
-                      ${CJSON_LDFLAGS}
+                      ${JSON_LDFLAGS}
                       luna-prefs
                       )
 

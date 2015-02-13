@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "accesschecker.h"
-#include <cjson/json.h>
+#include <json.h>
 
 #define IS_CALL_ALLOWED_CHECK "luna://com.webos.service.bus/isCallAllowed"
 

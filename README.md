@@ -107,7 +107,7 @@ Below are the tools and libraries (and their minimum versions) required to build
 * openwebos/cmake-modules-webos 1.0.0 RC2
 * cmake (version required by openwebos/cmake-modules-webos)
 * openwebos/luna-service2 3.0.0
-* openwebos/cjson 1.8.0
+* json-c 0.12
 * sqlite3 3.7.4-2
 * glib-2.0 2.28.6
 

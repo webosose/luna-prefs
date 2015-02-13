@@ -23,10 +23,10 @@ pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 include_directories(${GLIB2_INCLUDE_DIRS})
 webos_add_compiler_flags(ALL ${GLIB2_CFLAGS})
 
-# -- check for cjson
-pkg_check_modules(CJSON REQUIRED cjson)
-include_directories(${CJSON_INCLUDE_DIRS})
-webos_add_compiler_flags(ALL ${CJSON_CFLAGS})
+# -- check for json-c
+pkg_check_modules(JSON REQUIRED json-c)
+include_directories(${JSON_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${JSON_CFLAGS})
 
 # -- check for sqlite 3.0
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
@@ -44,7 +44,7 @@ webos_add_linker_options(ALL --no-undefined)
 add_library(luna-prefs SHARED lunaprefs.c)
 target_link_libraries(luna-prefs
                       ${GLIB2_LDFLAGS}
-                      ${CJSON_LDFLAGS}
+                      ${JSON_LDFLAGS}
                       ${SQLITE3_LDFLAGS}
                       ${NYXLIB_LDFLAGS}
                       )
