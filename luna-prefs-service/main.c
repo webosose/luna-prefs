@@ -183,7 +183,7 @@ parseMessage( LSMessage* message, const char* firstKey, ... )
     const char* str = LSMessageGetPayload( message );
     if ( NULL != str ) {
         struct json_object* doc = json_tokener_parse( str );
-        if ( !is_error(doc) ) {
+        if ( doc ) {
             va_list ap;
             va_start( ap, firstKey );
 
@@ -239,7 +239,7 @@ replyWithKeyValue( LSHandle* sh, LSMessage* message, LSError* lserror,
     struct json_object* jsonVal = json_tokener_parse( value );
 
     /* If it doesn't parse, it's probably just a string.  Turn it into a json string */
-    if ( is_error(jsonVal) )
+    if ( !jsonVal )
     {
         jsonVal = json_object_new_string( value );
     }
@@ -521,7 +521,7 @@ void sysGetSomeObj_callback(LSHandle* sh, LSMessage* message, bool allowed)
 
     if ( NULL != str ) {
         struct json_object* doc = json_tokener_parse( str );
-        if ( !is_error(doc) && json_object_is_type( doc, json_type_array ) ) {
+        if ( doc && json_object_is_type( doc, json_type_array ) ) {
             int len = json_object_array_length( doc );
             int ii;
 
@@ -1622,7 +1622,7 @@ appSetValue( LSHandle* sh, LSMessage* message, void* user_data )
     LPErr err;
 
     struct json_object* payload = json_tokener_parse( LSMessageGetPayload( message ) );
-    if ( !is_error(payload) ) {
+    if ( payload ) {
         struct json_object* appId = json_object_object_get( payload, "appId" );
         struct json_object* key = json_object_object_get( payload, "key");
         struct json_object* value = json_object_object_get( payload, "value");
@@ -1794,7 +1794,7 @@ preBackup( LSHandle* sh, LSMessage* message, void* user_data )
 
         // Parse payload string
         payload_json = json_tokener_parse(payload);
-        if (is_error(payload_json))
+        if (!payload_json)
         {
             errorText = "Cannot parse payload";
             break;
@@ -1861,7 +1861,7 @@ preBackup( LSHandle* sh, LSMessage* message, void* user_data )
         LSErrorLogDefault("CAN_NOT_SEND_REPLY", &lserror);
         LSErrorFree(&lserror);
     }
-    if (payload_json && !is_error(payload_json))
+    if (payload_json && payload_json)
     {
         json_object_put(payload_json);
     }
@@ -1900,7 +1900,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
 
     struct json_object* payload = json_tokener_parse( LSMessageGetPayload( message ) );
 
-    if (!payload || is_error(payload))
+    if (!payload || !payload)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1918,7 +1918,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     }
 
     struct json_object* tempDirLabel = json_object_object_get (payload, "tempDir");
-    if ((!tempDirLabel) || is_error(tempDirLabel))
+    if ((!tempDirLabel) || !tempDirLabel)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1955,7 +1955,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     temp_dir_str = json_object_get_string(tempDirLabel);
 
     struct json_object* files = json_object_object_get (payload, "files");
-    if (!files || is_error(files))
+    if (!files || !files)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1973,7 +1973,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
 
     struct array_list* fileArray = json_object_get_array(files);
 
-    if (!fileArray || is_error(fileArray))
+    if (!fileArray || !fileArray)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1998,7 +1998,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     for (index = 0; index < fileArrayLength; ++index)
     {
         struct json_object* obj = (struct json_object*) array_list_get_idx (fileArray, index);
-        if ((!obj) || is_error(obj))
+        if ((!obj) || !obj)
         {
             syslog(LOG_WARNING,"array object isn't valid (skipping)");
             continue;

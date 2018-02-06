@@ -34,7 +34,7 @@ bool processReply(LSHandle * handle, LSMessage * message, void* ctx)
            return true;
     }
 
-    if (!is_error(payload)) {
+    if (payload) {
         if (!json_object_get_boolean(json_object_object_get(payload, "returnValue"))) {
             LSMessage *replyMessage = newCC->message;
             LSMessageUnref(replyMessage);

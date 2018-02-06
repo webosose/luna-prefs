@@ -61,7 +61,7 @@ dumpArray( bool shellMode, bool all, const char* value )
 {
     if ( shellMode ) {
         struct json_object* array = json_tokener_parse( value );
-        g_assert( !is_error(array) );
+        g_assert( array );
         g_assert( json_object_is_type( array, json_type_array ) );
 
         int len = json_object_array_length( array );
@@ -159,7 +159,7 @@ main( int argc, char** argv )
         /* coerce it into a json if it isn't already */
         struct json_object* tree = json_tokener_parse( setValue );
         enum json_type typ;
-        if ( is_error(tree) ) {
+        if ( !tree ) {
             typ = json_type_null;
         } else {
             typ = json_object_get_type( tree );

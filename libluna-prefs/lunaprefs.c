@@ -112,7 +112,7 @@ static bool
 check_is_json( const char* text )
 {
     struct json_object* jobj = json_tokener_parse( text );
-    bool isJson = !is_error( jobj );
+    bool isJson =  jobj ;
     if ( isJson ) {
         isJson = is_toplevel_json( jobj );
         json_object_put( jobj );
@@ -126,13 +126,13 @@ keyValueAsObject( const char* key, const char* value )
 {
     struct json_object* jobject = json_object_new_object();
     struct json_object* jvalue = json_tokener_parse( value );
-    if ( is_error( jvalue ) ) {
+    if ( ! jvalue  ) {
         jvalue = json_object_new_string( value );
     } else if ( !is_toplevel_json(jvalue) ) {   /* not a legal document string */
         json_object_put( jvalue );
         jvalue = json_object_new_string( value );
     }
-    g_assert( !is_error(jvalue) );
+    g_assert( jvalue );
     json_object_object_add(jobject, key, jvalue);
 
     return jobject;
@@ -168,7 +168,7 @@ strToJsonWithCheck( const char* jstr, struct json_object** json )
 {
     LPErr err = LP_ERR_NONE;
     struct json_object* tmp = json_tokener_parse( jstr );
-    if ( !is_error( tmp ) && is_toplevel_json( tmp ) )
+    if (  tmp  && is_toplevel_json( tmp ) )
     {
         *json = tmp;
     }
@@ -499,7 +499,7 @@ addKeyValueToArray( void* context, int nColumns, char** colValues, char** colNam
     struct json_object* obj = json_object_new_object();
     if ( NULL != obj ) {
         struct json_object* value = json_tokener_parse( colValues[1] );
-        if ( !is_error(value) && is_toplevel_json(value) ) {
+        if ( value && is_toplevel_json(value) ) {
             json_object_object_add( obj, colValues[0], value );
             json_object_array_add( jarray, obj );
             return 0;
