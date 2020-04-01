@@ -672,7 +672,7 @@ static LPErr read_machine_type(char** jstr,const char* key)
 {
     nyx_error_t error = NYX_ERROR_GENERIC;
     nyx_device_handle_t device = NULL;
-    const char *dev_name;
+    const char *dev_name = "";
 
     LPErr err = LP_ERR_SYSCONFIG;
     error = nyx_init();
