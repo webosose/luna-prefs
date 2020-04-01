@@ -530,27 +530,30 @@ void sysGetSomeObj_callback(LSHandle* sh, LSMessage* message, bool allowed)
             {
                 struct json_object* key;
                 struct json_object* elem = json_object_array_get_idx( doc, ii );
-                if ( ( json_object_is_type( elem, json_type_object ) )
-                    && (NULL != (key = json_object_object_get( elem, "key" ))) )
-                {
-                    char* errMsg = NULL;
-                    const char* keyText = json_object_get_string( key );
-                    if ( !allowed && !onWhitelist(keyText) ) {
-                        (void)LPErrorString( LP_ERR_PERM, &errMsg );
-                        addKeyValueToArray( arrayOut, "errorText", errMsg );
-                    } else {
-                        gchar* value = NULL;
-                        LPErr err = LPSystemCopyStringValue( keyText, &value );
-                        if ( LP_ERR_NONE == err ) {
-                            addKeyValueToArray( arrayOut, keyText, value );
-                        } else {
-                            (void)LPErrorString( err, &errMsg );
+                if (  json_object_is_type( elem, json_type_object ) )
+		{
+                    key = json_object_object_get( elem, "key" );
+                    if  (NULL != key)
+                    {
+                        char* errMsg = NULL;
+                        const char* keyText = json_object_get_string( key );
+                        if ( !allowed && !onWhitelist(keyText) ) {
+                            (void)LPErrorString( LP_ERR_PERM, &errMsg );
                             addKeyValueToArray( arrayOut, "errorText", errMsg );
+                        } else {
+                            gchar* value = NULL;
+                            LPErr err = LPSystemCopyStringValue( keyText, &value );
+                            if ( LP_ERR_NONE == err ) {
+                                addKeyValueToArray( arrayOut, keyText, value );
+                            } else {
+                                (void)LPErrorString( err, &errMsg );
+                                addKeyValueToArray( arrayOut, "errorText", errMsg );
+                            }
+                            g_free(value);
                         }
-                        g_free(value);
+                        g_free( errMsg );
                     }
-                    g_free( errMsg );
-                } else {
+		} else {
                     addKeyValueToArray( arrayOut, "errorText", "missing 'key' parameter" );
                 }
             } /* for */
