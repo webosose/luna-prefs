@@ -1,4 +1,4 @@
-// Copyright (c) 2008-2018 LG Electronics, Inc.
+// Copyright (c) 2008-2020 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1860,7 +1860,7 @@ preBackup( LSHandle* sh, LSMessage* message, void* user_data )
         LSErrorLogDefault("CAN_NOT_SEND_REPLY", &lserror);
         LSErrorFree(&lserror);
     }
-    if (payload_json && payload_json)
+    if (payload_json)
     {
         json_object_put(payload_json);
     }
@@ -1899,7 +1899,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
 
     struct json_object* payload = json_tokener_parse( LSMessageGetPayload( message ) );
 
-    if (!payload || !payload)
+    if (!payload)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1917,7 +1917,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     }
 
     struct json_object* tempDirLabel = json_object_object_get (payload, "tempDir");
-    if ((!tempDirLabel) || !tempDirLabel)
+    if (!tempDirLabel)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1954,7 +1954,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     temp_dir_str = json_object_get_string(tempDirLabel);
 
     struct json_object* files = json_object_object_get (payload, "files");
-    if (!files || !files)
+    if (!files)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1972,7 +1972,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
 
     struct array_list* fileArray = json_object_get_array(files);
 
-    if (!fileArray || !fileArray)
+    if (!fileArray)
     {
         json_object_object_add (response, "returnValue", json_object_new_boolean(false));
         json_object_object_add (response, "errorText",
@@ -1997,7 +1997,7 @@ postRestore( LSHandle* sh, LSMessage* message, void* user_data )
     for (index = 0; index < fileArrayLength; ++index)
     {
         struct json_object* obj = (struct json_object*) array_list_get_idx (fileArray, index);
-        if ((!obj) || !obj)
+        if (!obj)
         {
             syslog(LOG_WARNING,"array object isn't valid (skipping)");
             continue;
