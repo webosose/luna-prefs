@@ -695,9 +695,9 @@ static LPErr read_machine_type(char** jstr,const char* key)
                 *jstr = g_strdup(dev_name);
                 err = LP_ERR_NONE;
             }
-            nyx_device_close(device);
+            (void)nyx_device_close(device);
         }
-        nyx_deinit();
+        (void)nyx_deinit();
     }
     return err;
 }
@@ -735,9 +735,9 @@ static LPErr read_OS_Info(char **jstr,const char* key)
                 *jstr = g_strdup(dev_name);
                 err = LP_ERR_NONE;
             }
-            nyx_device_close(device);
+            (void)nyx_device_close(device);
          }
-         nyx_deinit();
+         (void)nyx_deinit();
    }
    return err;
 }
