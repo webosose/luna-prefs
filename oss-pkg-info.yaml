@@ -1,4 +1,4 @@
 Open Source Software Package:
-- name: webOSOSE-luna-prefs
-  source: https://github.com/webosose/luna-prefs
+- name: webOSOSE
+  source: https://github.com/webosose
   license: Apache-2.0
