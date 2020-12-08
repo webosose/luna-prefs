@@ -1,11 +1,12 @@
 {
-	"exeName":"@WEBOS_INSTALL_BINDIR@/luna-prefs-service",
-	"type": "regular",
-	"allowedNames": ["com.palm.preferences"],
-	"permissions": [
-		{
-			"service":"com.palm.preferences",
-			"outbound":[]
-		}
-	]
+    "exeName":"@WEBOS_INSTALL_BINDIR@/luna-prefs-service",
+    "trustLevel" : ["oem"],
+    "type": "regular",
+    "allowedNames": ["com.palm.preferences"],
+    "permissions": [
+        {
+            "service":"com.palm.preferences",
+            "outbound":[]
+        }
+    ]
 }
