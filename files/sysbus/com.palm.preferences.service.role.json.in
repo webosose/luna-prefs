@@ -1,6 +1,6 @@
 {
     "exeName":"@WEBOS_INSTALL_BINDIR@/luna-prefs-service",
-    "trustLevel" : ["oem"],
+    "trustLevel" : "oem",
     "type": "regular",
     "allowedNames": ["com.palm.preferences"],
     "permissions": [
