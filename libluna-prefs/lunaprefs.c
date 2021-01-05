@@ -1,4 +1,4 @@
-// Copyright (c) 2008-2018 LG Electronics, Inc.
+// Copyright (c) 2008-2021 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -261,7 +261,7 @@ openDB( LPAppHandle_t* handle )
         if ( handle->pPath == NULL ) {
             err = LP_ERR_INVALID_HANDLE;
         } else {
-            g_mkdir_with_parents( handle->pPath, O_RDWR );
+            (void)g_mkdir_with_parents( handle->pPath, O_RDWR );
             gchar* fullPath = g_strdup_printf( "%s/prefsDB.sl", handle->pPath );
 
             sqlite3* pDb;
