@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2018 LG Electronics, Inc.
+// Copyright (c) 2015-2023 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -297,7 +297,8 @@ void free_list_and_data(GList * list)
     GList* last = g_list_last(list);
     for (iter = g_list_first (list);; iter = g_list_next (iter))
     {
-        g_free(iter->data);
+        if (iter)
+            g_free(iter->data);
         if ( iter == last )
             break;
     }
@@ -481,16 +482,16 @@ bool begin_restore(const gchar* db_file)
         gchar* parent_dir = g_path_get_dirname( (gchar* ) list_iter->data );
         syslog(LOG_DEBUG, "individual DB directory path %s", parent_dir );
 
-        if (mkdir(parent_dir, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) < 0)
-        {
-            syslog(LOG_ERR, "Failed to create directory, with error : %s ", strerror(errno));
-            free_list_and_data(restore_db_list);
+        if (parent_dir) {
+            if (mkdir(parent_dir, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) < 0)
+            {
+                syslog(LOG_ERR, "Failed to create directory, with error : %s ", strerror(errno));
+                free_list_and_data(restore_db_list);
+                g_free(parent_dir);
+                return false;
+            }
             g_free(parent_dir);
-            return false;
         }
-
-        g_free(parent_dir);
-
         if( !open_database(list_iter->data , &restoreDb) )
         {
             syslog(LOG_ERR, "Failed to open database" );

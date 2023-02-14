@@ -1,4 +1,4 @@
-// Copyright (c) 2008-2021 LG Electronics, Inc.
+// Copyright (c) 2008-2023 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -283,8 +283,11 @@ LPErr
 LPAppClearData( const char* appId )
 {
     gchar* path = g_strdup_printf( "/var/preferences/%s/prefsDB.sl", appId );
-    int err = unlink( path );
-    g_free( path );
+    int err = -1;
+    if (path) {
+        err = unlink( path );
+        g_free( path );
+    }
     return (err == 0)? LP_ERR_NONE : LP_ERR_PARAM_ERR;
 }
 
@@ -297,9 +300,10 @@ LPAppGetHandle( const char* appId, LPAppHandle* handle )
     g_return_val_if_fail( appId != NULL, -EINVAL );
 
     LPAppHandle_t* hndl = g_new0( LPAppHandle_t, 1 );
-    hndl->pPath = g_strdup_printf( "/var/preferences/%s", appId );
-
-    *handle = (LPAppHandle)hndl;
+    if (hndl) {
+        hndl->pPath = g_strdup_printf( "/var/preferences/%s", appId );
+        *handle = (LPAppHandle)hndl;
+    }
 
     return 0;
 } /* LPAppGetHandle */
@@ -885,15 +889,22 @@ readFromFile( const char* path, char** jstrp )
     if ( NULL != mf )
     {
         gsize siz = g_mapped_file_get_length( mf );
-        gchar buf[siz + 1];
-        memcpy( buf, g_mapped_file_get_contents(mf), siz );
-        //g_mapped_file_free( mf );
-    g_mapped_file_unref( mf );
+        if (siz) {
+            gchar buf[siz + 1];
+            const gchar *mfContent = g_mapped_file_get_contents(mf);
+            if (mfContent) {
+                memcpy( buf, mfContent, siz );
+                g_free( (gchar*)mfContent );
+            }
+            g_mapped_file_unref( mf );
 
-        buf[siz] = '\0';
-        jstr = g_strdup( buf );
-        err = NULL == jstr? LP_ERR_MEM : LP_ERR_NONE;
-        *jstrp = jstr;
+            buf[siz] = '\0';
+            jstr = g_strdup( buf );
+            err = NULL == jstr? LP_ERR_MEM : LP_ERR_NONE;
+            *jstrp = jstr;
+        } else {
+            g_critical( "failed to read file length %s", path );
+        }
     } else {
         g_critical( "failed to open file %s", path );
     }
@@ -1034,7 +1045,8 @@ addToArrayIfUnique( const gchar* name, bool onPublicBus, void* closure )
         int ii;
         for ( ii = 0; ii < len && !found; ++ii ) {
             struct json_object* str = json_object_array_get_idx( jarray, ii );
-            found = !strcmp( val, json_object_get_string(str) );
+            if ( ((val != NULL) && (str != NULL)) && (json_object_get_string(str)) )
+                found = !strcmp( val, json_object_get_string(str) );
         }
 
         if ( found ) {
