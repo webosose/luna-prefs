@@ -892,12 +892,10 @@ readFromFile( const char* path, char** jstrp )
         if (siz) {
             gchar buf[siz + 1];
             const gchar *mfContent = g_mapped_file_get_contents(mf);
-            if (mfContent) {
+            if (mfContent){
                 memcpy( buf, mfContent, siz );
-                g_free( (gchar*)mfContent );
             }
             g_mapped_file_unref( mf );
-
             buf[siz] = '\0';
             jstr = g_strdup( buf );
             err = NULL == jstr? LP_ERR_MEM : LP_ERR_NONE;
