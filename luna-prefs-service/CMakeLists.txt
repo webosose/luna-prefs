@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2018 LG Electronics, Inc.
+# Copyright (c) 2012-2023 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,4 +46,7 @@ target_link_libraries(luna-prefs-service
                       luna-prefs
                       )
 
-webos_build_program(NAME luna-prefs-service)
+install(TARGETS luna-prefs-service
+        DESTINATION bin
+        PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE)
