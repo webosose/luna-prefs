@@ -41,4 +41,4 @@ target_link_libraries(lunaprop
 install(TARGETS lunaprop
         DESTINATION bin
         PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-        GROUP_READ GROUP_EXECUTE)
+        GROUP_READ GROUP_EXECUTE WORLD_EXECUTE)

@@ -261,7 +261,7 @@ openDB( LPAppHandle_t* handle )
         if ( handle->pPath == NULL ) {
             err = LP_ERR_INVALID_HANDLE;
         } else {
-            (void)g_mkdir_with_parents( handle->pPath, O_RDWR );
+            (void)g_mkdir_with_parents( handle->pPath, S_IRWXU | S_IRWXG );
             gchar* fullPath = g_strdup_printf( "%s/prefsDB.sl", handle->pPath );
 
             sqlite3* pDb;
