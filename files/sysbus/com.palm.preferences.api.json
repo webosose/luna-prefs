@@ -1,14 +1,5 @@
 {
-    "preferences.application" : [
-        "com.palm.preferences/appProperties/getAllAppProperties",
-        "com.palm.preferences/appProperties/getAllAppPropertiesObj",
-        "com.palm.preferences/appProperties/getAppKeys",
-        "com.palm.preferences/appProperties/getAppKeysObj",
-        "com.palm.preferences/appProperties/getAppProperty",
-        "com.palm.preferences/appProperties/removeAppProperty",
-        "com.palm.preferences/appProperties/setAppProperty"
-    ],
-    "preferences.system" : [
+    "preferences.systempropertyquery": [
         "com.palm.preferences/systemProperties/Get",
         "com.palm.preferences/systemProperties/getAllSysProperties",
         "com.palm.preferences/systemProperties/getAllSysPropertiesObj",
@@ -17,5 +8,20 @@
         "com.palm.preferences/systemProperties/getSysKeys",
         "com.palm.preferences/systemProperties/getSysKeysObj",
         "com.palm.preferences/systemProperties/getSysProperty"
+    ],
+    "preferences.applicationpropertyquery": [
+        "com.palm.preferences/appProperties/getAllAppProperties",
+        "com.palm.preferences/appProperties/getAllAppPropertiesObj",
+        "com.palm.preferences/appProperties/getAppKeys",
+        "com.palm.preferences/appProperties/getAppKeysObj",
+        "com.palm.preferences/appProperties/getAppProperty"
+    ],
+    "preferences.operation": [
+        "com.palm.preferences/appProperties/removeAppProperty",
+        "com.palm.preferences/appProperties/setAppProperty"
+    ],
+    "preferences.management": [
+        "com.palm.preferences/backup/preBackup",
+        "com.palm.preferences/backup/postRestore"
     ]
 }
