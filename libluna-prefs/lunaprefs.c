@@ -759,7 +759,7 @@ figureDiskCapacity( char** jstr )
     /* current format has line ending in mmcblk0, but let's allow for some
        whitespace should the formatting change. */
     FILE* file = popen( "grep 'mmcblk0\\s*$' /proc/partitions", "r" );
-    if ( !!file )
+    if ( file )
     {
         int major, minor;
         long long unsigned nBlocks;
@@ -768,9 +768,11 @@ figureDiskCapacity( char** jstr )
         // added 32-bit numeric widths to deal with static analizer
         int nRead = fscanf( file, "%10d%10d%20llu%63s", &major, &minor, &nBlocks, name );
         if ( 4 == nRead ) {
-            nBlocks *= 1024;
-            *jstr = g_strdup_printf( "%llu", nBlocks );
-            err = LP_ERR_NONE;
+                if (nBlocks <= ULLONG_MAX / 1024) {
+                        nBlocks *= 1024;
+                        *jstr = g_strdup_printf( "%llu", nBlocks );
+                        err = LP_ERR_NONE;
+                }
         }
 
         pclose( file );
